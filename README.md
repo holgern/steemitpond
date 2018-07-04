@@ -1,9 +1,9 @@
+### **THIS PROJECT IS NO LONGER BEING MAINTAINED*
+
 ![](https://image.ibb.co/gtFwrd/steemitpond_preview.jpg)
 
 Steemit Pond
 ------------
-
-**NOTE: This project is no longer maintained.**
 
 Steemit Pond is a real-time visualization of Steemit activity occurring on the steem blockchain, but with an aquatic theme. *Postings, comments, upvotes, downvotes* - all are displayed as aquatic elements within the Steemit pond.
 
