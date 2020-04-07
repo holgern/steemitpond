@@ -5,19 +5,15 @@
  */
 var SteemitPond = (function() {
 
-    // Websocket
-    var server = 'wss://gtg.steem.house:8090';
-    var ws = new WebSocketWrapper(server);
-    var steem = new SteemWrapper(ws);
 
     var pond = $('#steemit-pond'); // app container element
     var lastIrreversibleBlock = 0; // track last block to avoid parsing multiple times
 
     // Just some useful constants
-    var DOMAIN = "http://steemit.com/";
+    var DOMAIN = "http://steemd.com/";
     var SIDE_MENU_WIDTH = 350;
     var COOKIE = "STEEMIT_POND_USER_FILTERS_COOKIE";
-    var COOKIE_DEFAULTS = ['@mynameisbrian', '@ned', '@dan'];
+    var COOKIE_DEFAULTS = ['@steemit'];
 
     // Sounds
     var soundsOn = false;
@@ -164,20 +160,18 @@ var SteemitPond = (function() {
 
     // Steemit Pond --------------------------------------------------------------------------------
 
-    var pollLatestBlock = function() {
-        ws.connect().then(function(response) {
-            steem.send('get_dynamic_global_properties',[], function(response) {
+    var pollLatestBlock = function() {	
+			steem.api.getDynamicGlobalProperties(function(err, response) {
                 if (lastIrreversibleBlock != response["last_irreversible_block_num"]) {
                     lastIrreversibleBlock = response["last_irreversible_block_num"];
                     parseTransactionsIn(lastIrreversibleBlock);
                 }
                 setTimeout(pollLatestBlock(), 1000);
             });
-        });
     };
 
     var parseTransactionsIn = function(block) {
-        steem.send("get_block", [block], function(block) {
+		steem.api.getBlock(block, function(err, block) {
             block.transactions.forEach(function(transaction) {
                 filterTransactionBy(transaction.operations[0]);
             });
